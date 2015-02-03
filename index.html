@@ -85,11 +85,172 @@
             <li>Controllers
               <ul>
                 <li>Controllers are associated with a portion of your HTML and define all of the state and methods that can be accessed within that section of the page.</li>
-                <li>With controllers, you can <em>modularize</em> your web app and decompose data and functionality into small, managable chunks.</li>
+                <li>With controllers, you can <em>modularize</em> your web app and decompose data and functionality into small, manageable chunks.</li>
               </ul>
             </li>
           </ul>
         </section>
+
+        <section>
+          <h2>Core Concepts (3)</h2>
+          <ul>
+            <li>Services
+              <ul>
+                <li>Controllers are used to manage data for some portion of a page <em>while it is being displayed</em>. As you move from page to page, controllers will come into and go out of existence all the time.</li>
+                <li>If you need to maintain state between invocations of a controller or if you need to share state between two different controllers, you can create a service.</li>
+                <li>Services are created when an Angular app is initialized
+                  <ul>
+                    <li>They will remain in place for the entire life of the application.</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+
+        <section>
+          <h2>Core Concepts (4)</h2>
+          <ul>
+            <li>Directives
+              <ul>
+                <li>Directives are ubiquitous in Angular; their primary use is to allow Angular to integrate into HTML in a natural way</li>
+                <li>But, they can also be used to create reusable components that combine controllers, data, and HTML
+                  <ul>
+                    <li>You can create a <em>login form</em> component, for instance, that can be re-used across multiple projects.</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Core Concepts (5)</h2>
+          <ul>
+            <li>Embeddable
+              <ul>
+                <li>Angular can control as much or as little of a web page as you specify</li>
+                <li>It is easy to embed a small Angular component into an existing page and then incrementally add new functionality over time</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Core Concepts (6)</h2>
+          <ul>
+            <li>Injectable
+              <ul>
+                <li>Angular makes use of a concept called dependency injection</li>
+                <li>Rather than use a <em>main routine</em> to wire everything together, Angular controllers and services declare their dependencies up front.</li>
+                <li>It is then up to the Angular run-time system to locate those dependencies at run-time and <em>inject</em> them into the component that needs them.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Modules (1)</h2>
+          <ul>
+            <li>A module is the primary way to package up a set of controllers into an Angular application</li>
+            <li>To create a module, give it a name and list its dependencies</li>
+          </ul>
+          <pre><code data-trim contenteditable>
+angular.module('contactsApp', [])
+          </code></pre>
+          <ul>
+            <li>This creates a module called <em>contactsApp</em>; this module has no dependencies.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Modules (2)</h2>
+          <ul>
+            <li>Once you have created a module, you can gain a handle to it by calling angular.module with no dependencies</li>
+          </ul>
+          <pre><code data-trim contenteditable>
+angular.module('contactsApp')
+          </code></pre>
+          <ul>
+            <li>This simply returns the previously created module, so you can add to it.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Modules (3)</h2>
+          <ul>
+            <li>Once you have a module defined in Javascript, you can tell Angular where it <em>lives</em> in the html with the <code>ng-app</code> directive.
+              <ul>
+                <li>In new files, that can be the <code>html</code> tag itself</li>
+                <li>In existing files, you might choose to narrow its scope and put the directive on a <code>div</code> tag</li>
+              </ul>
+            </li>
+          </ul>
+          <pre><code data-trim contenteditable>
+&lt;html ng-app="contactsApp"&gt;
+&lt;/html&gt;
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Controllers (1)</h2>
+          <ul>
+            <li>To actually do something in Angular, you need a controller</li>
+            <li>Controllers are declared using the <code>controller</code> function of an Angular module.</li>
+          </ul>
+          <pre><code data-trim contenteditable>
+angular.module('contactsApp')
+  .controller('MainController', [&lt;dependencies and code&gt;])
+          </code></pre>
+          <ul>
+            <li>The second parameter is an array that allows the controller to declare its dependencies.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Controllers (2)</h2>
+          <ul>
+            <li>A simple controller may have no dependencies</li>
+          </ul>
+          <pre><code data-trim contenteditable>
+&lt;MODULE&gt;.controller('MainController', [function() {
+  var self    = this;
+  self.name   = "Ken Anderson";
+  self.update = function() {
+    self.name = "Kenneth M. Anderson";
+  };
+}]);
+          </code></pre>
+          <ul>
+            <li>Here we create a controller that manages one piece of state (self.name) and provides access to one method</li>
+            <li>Anything defined on <em>this</em> is available to the HTML that makes use of the controller.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Controllers (3)</h2>
+          <ul>
+            <li>More complex controllers will declare dependencies</li>
+          </ul>
+          <pre><code data-trim contenteditable>
+&lt;MODULE&gt;.controller('MainController', ['$http', function($http) {
+  var self    = this;
+  self.name   = "Ken Anderson";
+  self.update = function() {
+    return $http.get('/api/1.0/update_name').then(function(response) {
+      self.name = response.data.new_name;
+      return response;
+    });
+  };
+}]);
+          </code></pre>
+          <ul>
+            <li>Here we create a controller that requires the use of Angular's built-in HTTP module.</li>
+            <li>The array is expected to have a set of strings and one function at the end. The function takes one parameter per dependency; each parameter will have the same name as the dependency.</li>
+          </ul>
+        </section>
+
 
 			</div>
 

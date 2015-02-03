@@ -251,6 +251,148 @@ angular.module('contactsApp')
           </ul>
         </section>
 
+        <section>
+          <h2>AngularJS: Hello World</h2>
+          <pre><code data-trim contenteditable>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Hello World&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body ng-app&gt;
+    &lt;h1&gt;Hello {{name}}&lt;/h1&gt;
+    &lt;input type="text" ng-model="name" placeholder="First Name"&gt;
+    &lt;script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+          </code></pre>
+          <p>Basic HTML5 document structure</p>
+          <p>Directives: ng-app on the body tag; ng-model on input tag</p>
+          <p>Script tag at the bottom loads Angular via Google's CDN</p>
+        </section>
+
+        <section>
+          <h2>What does it do?</h2>
+          <ul>
+            <li>The input tag declares that a model object exists called <strong>name</strong></li>
+            <li>The heading used Angular's built-in syntax to reference the values of models
+              <ul>
+                <li>{{<strong>name</strong>}} pulls in the current value of name and inserts it into the HTML as if it had been placed there originally</li>
+              </ul>
+            </li>
+            <li>This is an example of a one-way data binding</li>
+            <li>Any changes to the input field get communicated to all references automatically.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>First Controller</h2>
+          <pre><code data-trim contenteditable>
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app="hello"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Hello Controller&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body ng-controller="HelloController as c"&gt;
+    &lt;p&gt;The message is: &lt;input size="30" type="text" ng-model="c.message"&gt;&lt;/p&gt;
+    &lt;p&gt;The message is: {{c.message}}&lt;/p&gt;
+    &lt;p&gt;&lt;button ng-click="c.changeMessage()"&gt;Change Message&lt;/button&gt;&lt;/p&gt;
+    &lt;script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+      angular.module('hello', []).controller('HelloController', [
+        function() {
+          var self = this;
+          self.message = "Hello from the Controller";
+          self.changeMessage = function() {
+            self.message = "Goodbye from the Controller";
+          }
+        }
+      ]);
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Explanation (1)</h2>
+          <ul>
+            <li>First, declare that Angular controls the entire document</li>
+          </ul>
+          <pre><code data-trim contenteditable>
+&lt;html ng-app="hello"&gt;
+          </code></pre>
+          <ul>
+            <li>Second, load Angular via the CDN</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Explanation (2)</h2>
+          <ul>
+            <li>Third, indicate what portion of the document is controlled by our controller</li>
+          </ul>
+          <pre><code data-trim contenteditable>
+  &lt;body ng-controller="HelloController as c"&gt;
+          </code></pre>
+          <ul>
+            <li>This syntax says <blockquote>refer to an instance of the <strong>HelloController</strong> via the variable <strong>c</strong></blockquote></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Explanation (3)</h2>
+          <ul>
+            <li>Fourth, bind elements of the HTML to the controller</li>
+          </ul>
+          <pre><code data-trim contenteditable>
+&lt;p&gt;The message is: &lt;input size="30" type="text" ng-model="c.message"&gt;&lt;/p&gt;
+&lt;p&gt;The message is: {{c.message}}&lt;/p&gt;
+&lt;p&gt;&lt;button ng-click="c.changeMessage()"&gt;Change Message&lt;/button&gt;&lt;/p&gt;
+          </code></pre>
+          <ul>
+            <li>The input field is bound to the <strong>message</strong> variable.</li>
+            <li>The paragraph includes the value of the same variable</li>
+            <li>The button binds its click event to a method.</li>
+            <li>The binding is <q>two-way</q>. Changes propagate.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Explanation (4)</h2>
+          <ul>
+            <li>Fifth, create the controller</li>
+          </ul>
+          <pre><code data-trim contenteditable>
+angular.module('hello', []).controller('HelloController', [
+  function() {
+    var self = this;
+    self.message = "Hello from the Controller";
+    self.changeMessage = function() {
+      self.message = "Goodbye from the Controller";
+    }
+  }
+]);
+          </code></pre>
+          <ul>
+            <li>Here we create the controller in-line; we could also do this in a separate file and include that file with a script tag</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Explanation (5)</h2>
+          <p>Why did we do this?</p>
+          <pre><code data-trim contenteditable>
+var self = this;
+          </code></pre>
+          <ul>
+            <li>Closures!</li>
+            <li>Note that we reference self.message in the function <strong>changeMessage()</strong>.</li>
+            <li>If we had said <code>this.message</code> in <strong>changeMessage()</strong>, there is a chance that <strong>this</strong> no longer refers to the controller.</li>
+            <li>So we store the pointer to the controller in self and a closure captures that value when the <strong>changeMessage()</strong> function is created.</li>
+          </ul>
+        </section>
+
 
 			</div>
 
